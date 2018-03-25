@@ -1,5 +1,7 @@
 package com.example.nasa.securednotes;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.print.PrintAttributes;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 public class Encrypted extends AppCompatActivity
 {
 
+    Context context = this;
     Button decrypit;
     TextView econtent;
     TextView msg;
@@ -44,60 +47,98 @@ public class Encrypted extends AppCompatActivity
             @Override
             public void onClick(final View view)
             {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(Encrypted.this);
-                alertDialog.setTitle("PASSWORD");
-                alertDialog.setMessage("Enter Password");
+//                Toast.makeText(Encrypted.this, "Decrypt", Toast.LENGTH_SHORT).show();
 
-                final EditText input = new EditText(Encrypted.this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
-                input.setLayoutParams(lp);
-                alertDialog.setView(input);
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.decryptpassworddialog);
+                dialog.setTitle("Enter Password");
 
-                alertDialog.setPositiveButton("YES",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int which)
+                final EditText pass = (EditText)dialog.findViewById(R.id.password);
+
+                Button ok = (Button)dialog.findViewById(R.id.done);
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        String p = pass.getText().toString();
+                        if(p.equals("123"))
+                        {
+                            int n = i.getExtras().getInt("dkey");
+//
+                            int encrypt=0;
+                            String c="";
+                            int length = x.length();
+                            for(int i = 0;i<length;i++)
                             {
-//                                Intent myIntent1 = new Intent(view.getContext(), Encrypted.class);
-//                                startActivityForResult(myIntent1, 0);
-                                String Pass = input.getText().toString();
-                                if(Pass.equals("123"))
-                                {
-                                    int n = i.getExtras().getInt("dkey");
-
-                                    int encrypt=0;
-                                    String c="";
-                                    int length = x.length();
-                                    for(int i = 0;i<length;i++)
-                                    {
-                                        encrypt = (int)x.charAt(i)-n;
-                                        c = c+(char)encrypt;
-
-                                    }
-                                    econtent.setText(c);
-                                    System.out.println(value+"Bow");
-//                                    msg.setVisibility(View.VISIBLE);
-//                                    econtent.setVisibility(View.GONE);
-                                    Toast.makeText(getApplicationContext(),"Password Matched", Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(Encrypted.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
-                                }
+                                encrypt = (int)x.charAt(i)-n;
+                                c = c+(char)encrypt;
+                                System.out.println(c);
                             }
-                        });
-                alertDialog.setNegativeButton("NO",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
+                            econtent.setText(c);
+                            dialog.dismiss();
+                        }
 
-//                Toast.makeText(Encrypted.this, value, Toast.LENGTH_SHORT).show();
+                        else if(p.equals(""))
+                        {
+                            Toast.makeText(Encrypted.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else
+                        {
+                            Toast.makeText(Encrypted.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(Encrypted.this);
+//                alertDialog.setTitle("Enter Password");
+//
+//                final EditText input = new EditText(Encrypted.this);
+//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.WRAP_CONTENT,
+//                        LinearLayout.LayoutParams.WRAP_CONTENT);
+//
+//                input.setLayoutParams(lp);
+//                alertDialog.setView(input);
+//
+//                alertDialog.setPositiveButton("YES",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int which)
+//                            {
+////                                Intent myIntent1 = new Intent(view.getContext(), Encrypted.class);
+////                                startActivityForResult(myIntent1, 0);
+//                                String Pass = input.getText().toString();
+//                                if(Pass.equals("123"))
+//                                {
+//                                    int n = i.getExtras().getInt("dkey");
+//
+//                                    int encrypt=0;
+//                                    String c="";
+//                                    int length = x.length();
+//                                    for(int i = 0;i<length;i++)
+//                                    {
+//                                        encrypt = (int)x.charAt(i)-n;
+//                                        c = c+(char)encrypt;
+//                                        System.out.println(c);
+//
+//                                    }
+//                                    econtent.setText(c);
+////                                    System.out.println(value+"Bow");
+////                                    msg.setVisibility(View.VISIBLE);
+////                                    econtent.setVisibility(View.GONE);
+//                                    Toast.makeText(getApplicationContext(),"Password Matched", Toast.LENGTH_SHORT).show();
+//                                }
+//                                else
+//                                {
+//                                    Toast.makeText(Encrypted.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+////                Toast.makeText(Encrypted.this, value, Toast.LENGTH_SHORT).show();
+//                alertDialog.show();
+                dialog.show();
             }
         });
 

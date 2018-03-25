@@ -74,24 +74,30 @@ public class MainActivity extends AppCompatActivity
                 content2=note.getText().toString();
                 Toast.makeText(MainActivity.this, ""+content2, Toast.LENGTH_SHORT).show();
 
-                Random random = new Random();
-                int n = 1+random.nextInt(5);
+                Random ngenerator = new Random();
+                int nn = 10;
+                nn = ngenerator.nextInt(nn);
+
+                Random generator = new Random();
+                int n = nn;
+                n = generator.nextInt(n)+1;
                 System.out.println(n+"random");
                 int encrypt=0;
                 String c="";
                 int length = content2.length();
                 for(int i = 0;i<length;i++)
                 {
-                    encrypt = (int)content2.charAt(i)+n;
+                    encrypt = (int)content2.charAt(i)+(n);
                     System.out.println("encrypt"+encrypt);
-                    c = c+(char)encrypt;
+                    c = c + (char)encrypt;
 
                 }
-                System.out.println(c+"Decrypt");
+
+                System.out.println(c+" :encrypt content");
 
                 ContentAdapter obj = new ContentAdapter();
                 obj.setContent(content2);
-                System.out.println(obj.getContent()+"boww");
+//                System.out.println(obj.getContent()+"boww");
 
                 Intent i = new Intent(MainActivity.this,Encrypted.class);
                 i.putExtra("dkey",n);
